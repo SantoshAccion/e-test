@@ -2,20 +2,44 @@
   "name": "test-app",
   "version": "0.1.0",
   "private": true,
+  "main": "public/electron.js",
+  "homepage": "./",
+  "build": {
+    "appId": "com.example.electron-cra",
+    "files": [
+      "build/**/*"
+    ],
+    "directories":{
+      "buildResources": "assets"
+    }
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "cross-env": "^7.0.3",
+    "electron-is-dev": "^2.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "electron": "^21.2.2",
+    "electron-builder": "^23.6.0",
+    "electron-rebuild": "^3.2.9",
+    "react-scripts": "5.0.1",
+    "wait-on": "^6.0.1"
+  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "react-start": "react-scripts start",
+    "react-build": "react-scripts build",
+    "react-test": "react-scripts test",
+    "react-eject": "react-scripts eject",
+    "electron-build": "electron-builder",
+    "build": "npm run react-build && electron-builder --win",
+    "release": "set GH_TOKEN=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 && npm run react-build && electron-builder --win --publish always",
+    "start": "concurrently -k \"cross-env BROWSER=none npm run react-start\" \"wait-on http://localhost:3000 && electron --inspect=3001 .\""
   },
   "eslintConfig": {
     "extends": [
